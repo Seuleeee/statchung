@@ -20,3 +20,6 @@ class Stats(models.Model):
     update_datetime = models.DateTimeField(null=True)
     create_user = models.CharField(max_length=20)
     update_user = models.CharField(max_length=20, null=True)
+
+    class Meta:
+        db_table = 'STATS'
