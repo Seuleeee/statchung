@@ -14,3 +14,4 @@ class StatsViewSet(viewsets.ModelViewSet):
     """
     queryset = Stats.objects.all().order_by('-update_datetime')
     serializer_class = StatsSerializer
+    permission_classes = [permissions.AllowAny]
