@@ -42,7 +42,7 @@ schema_view = get_schema_view(
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('admin', admin.site.urls),
-    path('api/', include(('stats.urls', 'stats'))),
+    path('api/', include(('stats.urls', 'api'))),
 ]
 
 if settings.DEBUG:
