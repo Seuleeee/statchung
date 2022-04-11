@@ -7,3 +7,4 @@ class StatsSerializer(serializers.HyperlinkedModelSerializer):
         model = Stats
         fields = ['blockshots', 'create_datetime', 'create_user', 'offensive_rebounds', 'hustle_plays', 'memo',
                   'rebounds', 'scores', 'stat_id', 'threepoints', 'update_datetime', 'update_user', 'assists', 'screen_assists', 'good_screens']
+        # fields = ['blockshots', 'memo']

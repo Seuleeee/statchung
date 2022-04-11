@@ -16,9 +16,9 @@ class Stats(models.Model):
     threepoints = models.IntegerField(null=True)
     hustle_plays = models.IntegerField(null=True)
     memo = models.TextField(max_length=500, null=True)
-    create_datetime = models.DateTimeField(auto_created=True)
+    create_datetime = models.DateTimeField(auto_created=True, null=True)
     update_datetime = models.DateTimeField(null=True)
-    create_user = models.CharField(max_length=20)
+    create_user = models.CharField(max_length=20, null=True)
     update_user = models.CharField(max_length=20, null=True)
 
     class Meta:

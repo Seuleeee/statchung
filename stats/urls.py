@@ -10,5 +10,4 @@ router.register(r'stats', StatsViewSet, basename='stats')
 # The API URLs are now determined automatically by the router.
 urlpatterns = [
     path('v1/', include((router.urls, 'stats'))),
-    path('v1/statistics/<int:pk>', views.Statistics.as_view(), name='Statistics'),
 ]
