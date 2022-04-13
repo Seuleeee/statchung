@@ -12,7 +12,7 @@ from django.test import TestCase
 class StatsApiTests(APITestCase):
     def setUp(self):
         datetime_now = datetime.datetime.now()
-        Stats.objects.get_or_create(
+        stat_one, _ = Stats.objects.get_or_create(
             scores=24,
             rebounds=9,
             offensive_rebounds=5,
@@ -26,7 +26,7 @@ class StatsApiTests(APITestCase):
             create_datetime=datetime_now,
             create_user='꿔버_test'
         )
-        Stats.objects.get_or_create(
+        stat_two, _ = Stats.objects.get_or_create(
             scores=241,
             rebounds=92,
             offensive_rebounds=15,
@@ -41,12 +41,18 @@ class StatsApiTests(APITestCase):
             create_user='꿔버_test2'
         )
         self.create_read_url = reverse('api:stats:stats-list')
-        self.read_update_delete_url = reverse('api:stats:stats-detail', kwargs={'pk': '1'})
+        self.read_update_delete_url = reverse('api:stats:stats-detail', kwargs={'pk': stat_one.pk})
 
     def test_list(self):
         response = self.client.get(self.create_read_url)
         self.assertContains(response, '꿔버_test')
         self.assertContains(response, '꿔버_test2')
+
+    def test_detail(self):
+        response = self.client.get(self.read_update_delete_url)
+        data = json.loads(response.content)
+        create_user = '꿔버_test'
+        self.assertEqual(data['create_user'], create_user)
 
     def test_create(self):
         datetime_now = datetime.datetime.now()
@@ -86,8 +92,7 @@ class StatsApiTests(APITestCase):
         # self.assertEquals(data, content)
         self.assertEquals(Stats.objects.count(), 3)
 
-    def test_detail(self):
-        response = self.client.get(self.read_update_delete_url)
-        data = json.loads(response.content)
-        create_user = '꿔버_test'
-        self.assertEqual(data['create_user'], create_user)
+    def test_delete(self):
+        response = self.client.delete(self.read_update_delete_url)
+        self.assertEquals(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEquals(Stats.objects.count(), 1)

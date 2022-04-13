@@ -1,10 +1,21 @@
-from re import T
 from django.db import models
 from django.contrib.auth.models import User
+from stats.models.base import TimeStampedModel
 # Create your models here.
 
 
-class Stats(models.Model):
+class Users(TimeStampedModel):
+    user_id = models.CharField(primary_key=True, max_length=20)
+    password = models.CharField(max_length=512)
+    user_nm = models.CharField(max_length=10)
+    phone = models.CharField(max_length=20)
+    email = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'Users'
+
+
+class Stats(TimeStampedModel):
     stat_id = models.AutoField(primary_key=True)
     scores = models.IntegerField(null=True)
     rebounds = models.IntegerField(null=True)
@@ -16,10 +27,6 @@ class Stats(models.Model):
     threepoints = models.IntegerField(null=True)
     hustle_plays = models.IntegerField(null=True)
     memo = models.TextField(max_length=500, null=True)
-    create_datetime = models.DateTimeField(auto_created=True, null=True)
-    update_datetime = models.DateTimeField(null=True)
-    create_user = models.CharField(max_length=20, null=True)
-    update_user = models.CharField(max_length=20, null=True)
 
     class Meta:
         db_table = 'STATS'
