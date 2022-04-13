@@ -1,16 +1,13 @@
-from gc import get_stats
-from urllib import request
-from stats.models import Stats
+from stats.models.models import Stats, Users
 from rest_framework import viewsets
 from rest_framework import permissions
-from stats.serializers import StatsSerializer
-from django.http import Http404
+from stats.serializers import StatsSerializer, UsersSerializer
+from django.urls import resolve
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from stats.Services.stats_services import StatsService
 import json
-from stats.models import Stats
 
 stats_service = StatsService()
 
@@ -23,16 +20,23 @@ class StatsViewSet(viewsets.ModelViewSet):
     serializer_class = StatsSerializer
     permission_classes = [permissions.AllowAny]
 
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        print('============', resolve('/api/v1/stats/1/'))
+        return Response(serializer.data)
 
-class Statistics(APIView):
-    def get(self, request: object, pk: int) -> str:
-        try:
-            stats = Stats.objects.get(pk=pk)
-        except Stats.DoesNotExist:
-            return Response(status=Http404)
 
-        serializer = StatsSerializer(stats)
-        data = serializer.data
-        result = stats_service.get_statistics(data)
+class UsersViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows stats to be viewed or edited.
+    """
+    queryset = Users.objects.all()
+    serializer_class = UsersSerializer
+    permission_classes = [permissions.AllowAny]
 
-        return Response(result)
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        print('============', resolve('/api/v1/stats/1/'))
+        return Response(serializer.data)
