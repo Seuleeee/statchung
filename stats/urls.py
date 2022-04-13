@@ -12,5 +12,4 @@ router.register(r'users', UsersViewSet, basename='users')
 urlpatterns = [
     path('v1/', include((router.urls, 'stats'))),
     path('v1/', include((router.urls, 'users'))),
-
 ]
