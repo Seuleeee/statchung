@@ -1,12 +1,9 @@
-import django
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from stats.models import Stats
+from stats.models.models import Stats
 import datetime
 import json
-import pytest
-from django.test import TestCase
 
 
 class StatsApiTests(APITestCase):

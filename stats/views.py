@@ -1,5 +1,5 @@
 from stats.models.models import Stats, Users
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework import permissions
 from stats.serializers import StatsSerializer, UsersSerializer
 from django.urls import resolve
@@ -23,7 +23,6 @@ class StatsViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        print('============', resolve('/api/v1/stats/1/'))
         return Response(serializer.data)
 
 
@@ -38,5 +37,15 @@ class UsersViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        print('============', resolve('/api/v1/stats/1/'))
         return Response(serializer.data)
+
+
+class DashboardViewSet(generics.ListAPIView):
+    queryset = Stats.objects.all()
+    serializer_class = StatsSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def list(self, request, stat: str):
+        user_id = 'hsjo'
+        result = stats_service.get_dashboard_stats(stat, user_id)
+        return Response(result)
