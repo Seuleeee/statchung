@@ -16,7 +16,7 @@ class UserInfo(TimeStampedModel):
 
 
 class Board(TimeStampedModel):
-    board_id = models.IntegerField(primary_key=True)
+    board_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100)
     comment = models.CharField(max_length=300)
     likes = models.CharField(max_length=1)
@@ -45,7 +45,7 @@ class Records(models.Model):
 
 
 class EditDashboard(models.Model):
-    dashboard_id = models.IntegerField(primary_key=True)
+    dashboard_id = models.AutoField(primary_key=True)
     user_id = models.CharField(max_length=20)
 
     class Meta:
