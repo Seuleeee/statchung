@@ -5,10 +5,10 @@ from stats.serializers import AccountsSerializer
 from django.urls import resolve
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from stats.Services.stats_services import StatsService
+from stats.Services.board_services import BoardService
 import json
 
-# stats_service = StatsService()
+board_service = BoardService()
 
 
 class AccountsViewSet(viewsets.ModelViewSet):
@@ -23,3 +23,12 @@ class AccountsViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
+
+class BoardsView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        request_data = request.data
+        result = board_service.set_board_and_records(request_data)
+        return Response(result)

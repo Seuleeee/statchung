@@ -1,8 +1,21 @@
-from stats.models.models import UserInfo
+from attr import field
+from stats.models.models import UserInfo, Board, Records
 from rest_framework import serializers
 
 
 class AccountsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
+        fields = '__all__'
+
+
+class BoardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Board
+        fields = ['title', 'comment', 'likes', 'create_datetime', 'create_user']
+
+
+class RecordsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Records
         fields = '__all__'
