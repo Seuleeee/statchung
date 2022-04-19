@@ -30,7 +30,7 @@ class BoardService:
         return board_serializer.errors
 
     def get_board_list(self, request: dict) -> str:
-        board_list = Board.objects.filter(create_user=request['create_user']).values()
+        board_list = Board.objects.filter(delete_yn='n', create_user=request['create_user']).values()
         return board_list
 
     def get_board_detail(self, pk: int) -> str:
