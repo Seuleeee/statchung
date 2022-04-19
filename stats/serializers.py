@@ -12,7 +12,7 @@ class AccountsSerializer(serializers.ModelSerializer):
 class BoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
-        fields = ['title', 'comment', 'likes', 'create_datetime', 'create_user']
+        fields = ['title', 'comment', 'likes', 'create_datetime', 'create_user', 'delete_yn']
 
 
 class RecordsSerializer(serializers.ModelSerializer):

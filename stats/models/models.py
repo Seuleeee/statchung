@@ -20,6 +20,7 @@ class Board(TimeStampedModel):
     title = models.CharField(max_length=100)
     comment = models.CharField(max_length=300)
     likes = models.CharField(max_length=1)
+    delete_yn = models.CharField(default='n', max_length=1)
 
     class Meta:
         db_table = 'BOARD'

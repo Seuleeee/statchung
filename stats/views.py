@@ -64,4 +64,9 @@ class BoardsDetailView(APIView):
         return Response(result)
 
     def delete(self, request, pk):
-        return Response(0)
+        result = board_service.delete_board(pk)
+        return Response(result)
+
+    def put(self, request, pk):
+        result = board_service.update_board(request.data, pk)
+        return Response(result)
