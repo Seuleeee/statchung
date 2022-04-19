@@ -4,6 +4,7 @@ from rest_framework import status
 import datetime
 import json
 from django.db import transaction
+from django.core import serializers
 
 
 class BoardService:
@@ -32,3 +33,12 @@ class BoardService:
     def get_board_list(self, request: dict) -> str:
         board_list = Board.objects.filter(create_user=request['create_user']).values()
         return board_list
+
+    def get_board_detail(self, pk: int) -> str:
+        board_detail = Board.objects.values().get(board_id=pk)
+        record_detail = Records.objects.values().get(board=pk)
+        result = {
+            'board': board_detail,
+            'record': record_detail
+        }
+        return result

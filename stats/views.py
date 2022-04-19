@@ -56,3 +56,12 @@ class BoardsView(APIView):
         request_data['create_user'] = 'hsjo'
         result = board_service.get_board_list(request_data)
         return Response(result)
+
+
+class BoardsDetailView(APIView):
+    def get(self, request, pk):
+        result = board_service.get_board_detail(pk)
+        return Response(result)
+
+    def delete(self, request, pk):
+        return Response(0)
