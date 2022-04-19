@@ -1,13 +1,12 @@
 from stats.models.models import UserInfo
-from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import viewsets
 from rest_framework import permissions
 from stats.serializers import AccountsSerializer
-from django.urls import resolve
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from stats.Services.board_services import BoardService
+from stats.consts.swagger_params import board_get_list_params, board_post_params, board_put_params
 import json
 
 board_service = BoardService()
@@ -30,27 +29,13 @@ class AccountsViewSet(viewsets.ModelViewSet):
 class BoardsView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    board_param = [
-        openapi.Parameter(
-            'start_date',
-            openapi.IN_QUERY,
-            description="test manual param",
-            type=openapi.FORMAT_DATE
-        ),
-        openapi.Parameter(
-            'end_date',
-            openapi.IN_QUERY,
-            description="test manual param",
-            type=openapi.FORMAT_DATE
-        ),
-    ]
-
+    @swagger_auto_schema(request_body=board_post_params)
     def post(self, request):
         request_data = request.data
         result = board_service.set_board_and_records(request_data)
         return Response(result)
 
-    @swagger_auto_schema(manual_parameters=board_param)
+    @swagger_auto_schema(manual_parameters=board_get_list_params)
     def get(self, request):
         request_data = request.data
         request_data['create_user'] = 'hsjo'
@@ -67,6 +52,7 @@ class BoardsDetailView(APIView):
         result = board_service.delete_board(pk)
         return Response(result)
 
+    @swagger_auto_schema(request_body=board_put_params)
     def put(self, request, pk):
         result = board_service.update_board(request.data, pk)
         return Response(result)
