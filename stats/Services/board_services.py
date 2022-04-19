@@ -28,3 +28,7 @@ class BoardService:
                 }
             return records_serializer.errors
         return board_serializer.errors
+
+    def get_board_list(self, request: dict) -> str:
+        board_list = Board.objects.filter(create_user=request['create_user']).values()
+        return board_list
