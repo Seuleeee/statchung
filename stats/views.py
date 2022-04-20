@@ -6,10 +6,12 @@ from stats.serializers import AccountsSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from stats.Services.board_services import BoardService
+from stats.Services.dashboard_services import DashboardService
 from stats.consts.swagger_params import board_get_list_params, board_post_params, board_put_params
 import json
 
 board_service = BoardService()
+dashboard_service = DashboardService()
 
 
 class AccountsViewSet(viewsets.ModelViewSet):
@@ -55,4 +57,11 @@ class BoardsDetailView(APIView):
     @swagger_auto_schema(request_body=board_put_params)
     def put(self, request, pk):
         result = board_service.update_board(request.data, pk)
+        return Response(result)
+
+
+class DashboardRecentView(APIView):
+    def get(self, request):
+        test_user_id = 'kbjang'
+        result = dashboard_service.get_dashboard_recent(test_user_id)
         return Response(result)
