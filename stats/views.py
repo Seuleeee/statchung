@@ -39,7 +39,7 @@ class BoardsView(APIView):
 
     @swagger_auto_schema(manual_parameters=board_get_list_params)
     def get(self, request):
-        request_data = request.data
+        request_data = {param_set[0]: param_set[1] for param_set in request.GET.items()}
         request_data['create_user'] = 'hsjo'
         result = board_service.get_board_list(request_data)
         return Response(result)
