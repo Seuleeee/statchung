@@ -1,5 +1,15 @@
 from drf_yasg import openapi
 
+account_post_params = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        'user_id': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'password': openapi.Schema(type=openapi.FORMAT_PASSWORD, description='string'),
+        'nickname': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'phone': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'e-mail': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+    })
+
 board_get_list_params = [
     openapi.Parameter(
         'start_date',

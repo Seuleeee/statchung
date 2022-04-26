@@ -7,25 +7,27 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from stats.Services.board_services import BoardService
 from stats.Services.dashboard_services import DashboardService
-from stats.consts.swagger_params import board_get_list_params, board_post_params, board_put_params
+from stats.Services.user_services import UserService
+from stats.consts.swagger_params import board_get_list_params, board_post_params, board_put_params, account_post_params
 import json
 
 board_service = BoardService()
 dashboard_service = DashboardService()
+user_service = UserService()
 
 
-class AccountsViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows stats to be viewed or edited.
-    """
-    queryset = UserInfo.objects.all().order_by('-create_datetime')
-    serializer_class = AccountsSerializer
+class AccountsView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+    @swagger_auto_schema(request_body=account_post_params)
+    def post(self, request):
+        try:
+            data = json.loads(request.body)
+            result = user_service.set_account(data)
+            return Response(result)
+
+        except:
+            raise ValueError("잘못된 입력입니다.")
 
 
 class BoardsView(APIView):
