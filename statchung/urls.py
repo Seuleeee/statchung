@@ -43,6 +43,8 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin', admin.site.urls),
     path('api/', include(('stats.urls', 'api'))),
+    path('api/', include(('users.urls', 'accounts'))),
+    # path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:
