@@ -9,8 +9,10 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+from datetime import timedelta
 import os
 from pathlib import Path
+from pstats import Stats
 import environ
 env = environ.Env(
     DEBUG=(bool, False)
@@ -32,6 +34,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'users.User'
+
 
 # Application definition
 
@@ -45,7 +49,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'drf_yasg',
+    # 추가된
     'stats',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -94,10 +100,25 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
+        'rest_framework.permissions.IsAdminUser',  # 관리자만 접근 가능
+        'rest_framework.permissions.AllowAny',  # 누구나 접근 가능
+
+    ),
+
+    'DEFAULT_RENDERER_CLASSES': (
+        # 자동으로 json으로 바꿔줌
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication'
-    )
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+    ),
 }
 
 
@@ -141,3 +162,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_USE_JWT = True
+
+# JWT
+# 추가적인 JWT_AUTH 설젇
+JWT_AUTH = {
+    'JWT_SECRET_KEY': SECRET_KEY,
+    'JWT_ALGORITHM': 'HS256',  # 암호화 알고리즘
+    'JWT_ALLOW_REFRESH': True,  # refresh 사용 여부
+    'JWT_EXPIRATION_DELTA': timedelta(days=7),  # 유효기간 설정
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=28),  # JWT 토큰 갱신 유효기간
+    'AUTH_HEADER_TYPES': ('jwt',),
+}

@@ -17,7 +17,7 @@ user_service = UserService()
 
 
 class AccountsView(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     @swagger_auto_schema(request_body=account_post_params)
     def post(self, request):
@@ -31,7 +31,7 @@ class AccountsView(APIView):
 
 
 class BoardsView(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
     @swagger_auto_schema(request_body=board_post_params)
     def post(self, request):
@@ -48,6 +48,8 @@ class BoardsView(APIView):
 
 
 class BoardsDetailView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request, pk):
         result = board_service.get_board_detail(pk)
         return Response(result)
@@ -63,6 +65,8 @@ class BoardsDetailView(APIView):
 
 
 class DashboardRecentView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         test_user_id = 'kbjang'
         result = dashboard_service.get_dashboard_recent(test_user_id)
