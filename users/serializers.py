@@ -1,7 +1,9 @@
+from django.forms import CharField
 from pkg_resources import require
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from rest_framework_jwt.settings import api_settings
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import update_last_login
 
@@ -47,6 +49,7 @@ class UserLoginSerializer(serializers.Serializer):
         try:
             payload = JWT_PAYLOAD_HANDLER(user)
             jwt_token = JWT_ENCODE_HANDLER(payload)  # 토큰 발행
+
             update_last_login(None, user)
         except User.DoesNotExist:
             raise serializers.ValidationError(
@@ -56,3 +59,13 @@ class UserLoginSerializer(serializers.Serializer):
             'user_id': user.user_id,
             'token': jwt_token
         }
+
+
+class LoginRequestSerializer(serializers.Serializer):
+    user_id = serializers.CharField()
+    password = serializers.CharField()
+
+
+class LoginResponseSerializer(serializers.Serializer):
+    user_id = serializers.CharField()
+    token = serializers.CharField()
