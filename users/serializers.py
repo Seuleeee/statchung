@@ -13,14 +13,14 @@ User = get_user_model()
 class UserCreateSerializer(serializers.Serializer):
     user_id = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
-    username = serializers.CharField(required=True)
+    nickname = serializers.CharField(required=True)
     password = serializers.CharField(required=True)
 
     def create(self, validated_data):
         user = User.objects.create(
             user_id=validated_data['user_id'],
             email=validated_data['email'],
-            username=validated_data['username'],
+            nickname=validated_data['nickname'],
         )
         user.set_password(validated_data['password'])
 

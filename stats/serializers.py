@@ -3,12 +3,6 @@ from stats.models.models import UserInfo, Board, Records
 from rest_framework import serializers
 
 
-class AccountsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserInfo
-        fields = '__all__'
-
-
 class BoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board

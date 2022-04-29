@@ -5,6 +5,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from users.serializers import UserCreateSerializer, UserLoginSerializer, LoginRequestSerializer, LoginResponseSerializer
 from drf_yasg.utils import swagger_auto_schema
+from .Services.user_services import UserService
+
+user_service = UserService()
 
 
 class SignUpView(APIView):
@@ -12,6 +15,9 @@ class SignUpView(APIView):
 
     @swagger_auto_schema(request_body=UserCreateSerializer)
     def post(self, request):
+        is_valid = user_service.check_user_validation(request.data)
+        if not is_valid:
+            return Response("회원가입에 실패하였습니다.", status=400)
         serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()  # DB 저장

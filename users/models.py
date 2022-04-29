@@ -45,8 +45,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         unique=True,
         help_text='EMAIL ID.'
     )
-    username = models.CharField(
-        max_length=30,
+    nickname = models.CharField(
+        max_length=20, unique=True, null=True, default=None
     )
     is_staff = models.BooleanField(
         _('staff status'),
