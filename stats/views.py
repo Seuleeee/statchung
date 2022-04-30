@@ -19,13 +19,15 @@ class BoardsView(APIView):
     @swagger_auto_schema(request_body=board_post_params)
     def post(self, request):
         request_data = request.data
-        result = board_service.set_board_and_records(request_data)
+        create_user = request.user.user_id
+        result = board_service.set_board_and_records(request_data, create_user)
         return Response(result)
 
     @swagger_auto_schema(manual_parameters=board_get_list_params)
     def get(self, request):
+        current_user = request.user.user_id
         request_data = {param_set[0]: param_set[1] for param_set in request.GET.items()}
-        request_data['create_user'] = 'hsjo'
+        request_data['create_user'] = current_user
         result = board_service.get_board_list(request_data)
         return Response(result)
 
@@ -43,7 +45,8 @@ class BoardsDetailView(APIView):
 
     @swagger_auto_schema(request_body=board_put_params)
     def put(self, request, pk):
-        result = board_service.update_board(request.data, pk)
+        update_user = request.user.user_id
+        result = board_service.update_board(request.data, pk, update_user)
         return Response(result)
 
 
@@ -51,6 +54,6 @@ class DashboardRecentView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        test_user_id = 'kbjang'
-        result = dashboard_service.get_dashboard_recent(test_user_id)
+        current_user = request.user.user_id
+        result = dashboard_service.get_dashboard_recent(current_user)
         return Response(result)

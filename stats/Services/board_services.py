@@ -8,9 +8,9 @@ from django.db import transaction
 
 class BoardService:
     @transaction.atomic()
-    def set_board_and_records(self, request: dict) -> str:
+    def set_board_and_records(self, request: dict, create_user: str) -> str:
         datetime_now = datetime.datetime.now()
-        request['board']['create_user'] = 'hsjo'
+        request['board']['create_user'] = create_user
         request['board']['create_datetime'] = datetime_now
         board_serializer = BoardSerializer(data=request['board'])
 
@@ -54,11 +54,11 @@ class BoardService:
         except:
             raise ValueError('삭제에 실패하였습니다.')
 
-    def update_board(self, request: dict, pk: int) -> str:
+    def update_board(self, request: dict, pk: int, update_user: str) -> str:
         datetime_now = datetime.datetime.now()
         board_object = Board.objects.get(board_id=pk)
         record_object = Records.objects.get(board=pk)
-        request['board']['update_user'] = 'hsjo'
+        request['board']['update_user'] = update_user
         request['board']['update_datetime'] = datetime_now
         board_serializer = BoardSerializer(board_object, data=request['board'])
 
