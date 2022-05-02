@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from stats.Services.board_services import BoardService
 from stats.Services.dashboard_services import DashboardService
 from stats.consts.swagger_params import board_get_list_params, board_post_params, board_put_params
+from stats.serializers import BoardRequestSerializer
 import json
 
 board_service = BoardService()
@@ -23,7 +24,7 @@ class BoardsView(APIView):
         result = board_service.set_board_and_records(request_data, create_user)
         return Response(result)
 
-    @swagger_auto_schema(manual_parameters=board_get_list_params)
+    @swagger_auto_schema(query_serializer=BoardRequestSerializer)
     def get(self, request):
         current_user = request.user.user_id
         request_data = {param_set[0]: param_set[1] for param_set in request.GET.items()}

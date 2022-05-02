@@ -13,3 +13,8 @@ class RecordsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Records
         fields = '__all__'
+
+
+class BoardRequestSerializer(serializers.Serializer):
+    start_date = serializers.DateField()
+    end_date = serializers.DateField()
