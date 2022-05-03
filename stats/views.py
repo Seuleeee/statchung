@@ -8,6 +8,7 @@ from stats.Services.board_services import BoardService
 from stats.Services.dashboard_services import DashboardService
 from stats.consts.swagger_params import board_get_list_params, board_post_params, board_put_params
 from stats.serializers import BoardRequestSerializer
+from stats.exceptions import InvalidUserRequestException
 import json
 
 board_service = BoardService()
@@ -55,6 +56,9 @@ class DashboardRecentView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        current_user = request.user.user_id
-        result = dashboard_service.get_dashboard_recent(current_user)
+        try:
+            current_user = request.user.user_id
+            result = dashboard_service.get_dashboard_recent(current_user)
+        except:
+            raise InvalidUserRequestException()
         return Response(result)
