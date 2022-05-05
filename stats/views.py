@@ -6,8 +6,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from stats.Services.board_services import BoardService
 from stats.Services.dashboard_services import DashboardService
-from stats.consts.swagger_params import board_get_list_params, board_post_params, board_put_params
-from stats.serializers import BoardRequestSerializer
+from stats.consts.swagger_params import board_put_params
+from stats.serializers import BoardRequestSerializer, BoardPostPutRequestSerializer
 from stats.exceptions import InvalidUserRequestException
 import json
 
@@ -18,7 +18,7 @@ dashboard_service = DashboardService()
 class BoardsView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    @swagger_auto_schema(request_body=board_post_params)
+    @swagger_auto_schema(request_body=BoardPostPutRequestSerializer)
     def post(self, request):
         request_data = request.data
         create_user = request.user.user_id
